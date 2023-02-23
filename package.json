@@ -24,6 +24,7 @@
     "express": "^4.17.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
+    "react-toastify": "^9.1.1",
     "underscore": "^1.12.1"
   }
 }
