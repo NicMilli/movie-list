@@ -10,12 +10,13 @@ const Search = (props) => {
 
   const handleClick = (e) => {
     e.preventDefault();
+    setInputText('');
     props.handleClick(inputText);
   }
 
   return (
     <div>
-    <form>
+    <form className='formInput'>
       <input type='text' value={inputText} onChange={handleChange}></input>
       <button onClick={handleClick}>Search</button>
     </form>
