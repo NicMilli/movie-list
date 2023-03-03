@@ -1,22 +1,30 @@
 import React from 'react';
 import {useState} from 'react';
 import {searchMovieDB, searchMovieID} from '../Data/searchMovies.js';
+import MovieInfo from './MovieInfo.jsx';
 
 const MovieListItem = (props) => {
   const [clicked, setClicked] = useState(false);
-  const [info, setInfo] = useState('');
+  const [info, setInfo] = useState({});
 
   const handleClick = async (e) => {
-    console.log('click')
     var movieID = await searchMovieDB(props.movie.title);
-    console.log(movieID.results[0].id)
+    if (movieID.results[0]) {
     var movieInfo = await searchMovieID(movieID.results[0].id);
-    console.log(movieInfo)
     if (movieInfo) {
-      // setInfo({Runtime: `${movieInfo.runtime} minutes`, 'Release Date': movieInfo.release_date.slice(0, 3), Metascore: movieInfo.vote_average, IMDB_ID: movieInfo.imdb_id});
-      setInfo(movieInfo[0].description);
+      setInfo({
+        overview: movieInfo.overview,
+        released: movieInfo.release_date,
+        vote_average: movieInfo.vote_average,
+        watched: props.movie.watched
+      });
       setClicked(prevClicked => !prevClicked);
     }
+    } else {
+      setInfo(false);
+      setClicked(prevClicked => !prevClicked);
+    }
+
   };
 
   const toggleMovie = (e) =>  {
@@ -27,9 +35,11 @@ const MovieListItem = (props) => {
     return <p>{props.movie.title}</p>
   } else {
     return (
-      clicked ? <div>{props.movie.watched === true ? <p style={{color: 'red'}} onClick={handleClick}>{props.movie.title} has been watched</p> : <p onClick={handleClick}>{props.movie.title}</p>}
-      <p>{info}<button onClick={toggleMovie}>Watched</button></p>
-      </div> : <div>{props.movie.watched === true ? <p style={{color: 'red'}} onClick={handleClick}>{props.movie.title} has been watched</p> : <p onClick={handleClick}>{props.movie.title}</p>}
+      clicked
+      ? <div>{props.movie.watched === true ? <p style={{color: 'red'}} onClick={handleClick}>{props.movie.title} has been watched</p> : <p onClick={handleClick}>{props.movie.title}</p>}
+      <MovieInfo toggleMovie={toggleMovie} info={info}/>
+      </div>
+      : <div>{props.movie.watched === true ? <p style={{color: 'red'}} onClick={handleClick}>{props.movie.title} has been watched</p> : <p onClick={handleClick}>{props.movie.title}</p>}
       </div>
     )
 }
