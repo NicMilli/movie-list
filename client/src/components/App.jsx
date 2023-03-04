@@ -5,12 +5,14 @@ import AddMovies from './AddMovies.jsx';
 import SwitchTabs from './SwitchTabs.jsx';
 import {useState, useEffect} from 'react';
 import axios from 'axios';
+import {searchMovieDB, searchMovieID} from '../Data/searchMovies.js';
 
 
 const App = () => {
   const [movies, setMovies] = useState([{title: 'Please add movies to your list', watched: false}]);
   const [searchResults, setSearchResults] = useState([]);
   const [toWatchPage, setToWatchPage] = useState(true);
+  const [addOptions, setAddoptions] = useState([])
 
 useEffect( () => {
   fetchMovies();
@@ -20,20 +22,17 @@ const fetchMovies = async() => {
   //var currentmovies = await
   var response = await axios.get('/api/movies');
   var currentMovies = await response.data;
-  console.log(currentMovies[0]);
   setMovies(currentMovies[0]);
 };
 
-const addMovies = (title) => {
-  axios.post('/api/movies', {
+const addMovies = async (title) => {
+  return await axios.post('/api/movies', {
     title: title
   }, {
     headers: {
       'Content-Type': 'application/json'
-    }}).then((currentMovies) => {
-      setMovies([...movies, {title: title, watched: 0}]);
-  })
-}
+    }})
+};
 
   const handleSearch = (searchTerm) => {
     var results = [];
@@ -57,7 +56,13 @@ const addMovies = (title) => {
     }
   };
 
-  const toggleWatched = (movie) => {
+  const toggleWatched = async(movie) => {
+    await axios.put('/api/movies', {
+      title: movie.title
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }});
     var index = movies.indexOf(movie);
     let allMovies = movies.slice();
     movie.watched === 1 ? movie.watched = 0 : movie.watched = 1;

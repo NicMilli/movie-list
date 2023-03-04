@@ -3,6 +3,7 @@ const movieController = require('./controller/movieController');
 
 router.route('/movies')
 .get(movieController.getMovies)
-.post(movieController.addMovies);
+.post(movieController.addMovies)
+.put(movieController.watchMovie);
 
 module.exports = router;

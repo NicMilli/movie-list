@@ -15,7 +15,7 @@ module.exports = {
     res.sendStatus(201);
     } catch (e) {
       res.status(404);
-      if (e.errors[0].message) {
+      if (e.errors && e.errors.length) {
         res.send(`Error updating the database: ${e.errors[0].message}`);
       } else {
         res.send('Sorry, there was an issue adding to the database')
@@ -30,5 +30,27 @@ module.exports = {
   getMovies: async function(req, res) {
     const movies = await sequelize.query('SELECT * from Movie');
     res.json(movies);
+  },
+  watchMovie: async function(req, res) {
+    var updatedAt = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    var watched = 1;
+    var query = 'UPDATE Movie SET watched = ?, updatedAt = ? WHERE title = ?';
+    console.log(req.body.title)
+    try {
+      const movies = await sequelize.query(query, {
+      replacements: [watched, updatedAt, req.body.title]
+    });
+    res.sendStatus(204);
+    } catch (e) {
+      console.log(e);
+      res.status(404);
+      if (e.errors) {
+
+        res.send(`Error updating the database: ${e.errors[0].message}`);
+      } else {
+        res.send('Sorry, there was an issue adding to the database')
+      }
+
+    }
   }
 };
