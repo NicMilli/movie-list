@@ -38,10 +38,10 @@ const MovieListItem = (props) => {
   } else {
     return (
       clicked
-      ? <div>{props.movie.watched === true ? <p style={{color: 'red'}} onClick={handleClick}>{props.movie.title} has been watched</p> : <p onClick={handleClick}>{props.movie.title}</p>}
+      ? <div>{props.movie.watched === true ? <p style={{color: 'red'}} onClick={handleClick}>{props.movie.title} has been watched</p> : <p onClick={handleClick} className='test'>{props.movie.title}</p>}
       <MovieInfo toggleMovie={toggleMovie} info={info}/>
       </div>
-      : <div>{props.movie.watched === true ? <p style={{color: 'red'}} onClick={handleClick}>{props.movie.title} has been watched</p> : <p onClick={handleClick}>{props.movie.title}</p>}
+      : <div>{props.movie.watched === true ? <p style={{color: 'red'}} onClick={handleClick}>{props.movie.title} has been watched</p> : <p onClick={handleClick} className='test'>{props.movie.title}</p>}
       </div>
     )
 }

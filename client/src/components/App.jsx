@@ -78,7 +78,7 @@ const addMovies = async (title) => {
   return (
     <div >
       <div className='center'>
-        <h1 className='test'>MovieList</h1>
+        <h1 className='test'>Movie List</h1>
       </div>
       <AddMovies handleClick={handleAdd}/>
       <Search handleClick={handleSearch}/>
