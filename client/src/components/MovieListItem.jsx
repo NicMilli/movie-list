@@ -12,9 +12,11 @@ const MovieListItem = (props) => {
     if (movieID.results[0]) {
     var movieInfo = await searchMovieID(movieID.results[0].id);
     if (movieInfo) {
+
       setInfo({
         overview: movieInfo.overview,
         released: movieInfo.release_date,
+        runtime: movieInfo.runtime,
         vote_average: movieInfo.vote_average,
         watched: props.movie.watched
       });

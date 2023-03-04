@@ -4,12 +4,36 @@ import Search from './Search.jsx';
 import AddMovies from './AddMovies.jsx';
 import SwitchTabs from './SwitchTabs.jsx';
 import {useState, useEffect} from 'react';
+import axios from 'axios';
 
 
 const App = () => {
   const [movies, setMovies] = useState([{title: 'Please add movies to your list', watched: false}]);
   const [searchResults, setSearchResults] = useState([]);
   const [toWatchPage, setToWatchPage] = useState(true);
+
+useEffect( () => {
+  fetchMovies();
+},[])
+
+const fetchMovies = async() => {
+  //var currentmovies = await
+  var response = await axios.get('/api/movies');
+  var currentMovies = await response.data;
+  console.log(currentMovies[0]);
+  setMovies(currentMovies[0]);
+};
+
+const addMovies = (title) => {
+  axios.post('/api/movies', {
+    title: title
+  }, {
+    headers: {
+      'Content-Type': 'application/json'
+    }}).then((currentMovies) => {
+      setMovies([...movies, {title: title, watched: 0}]);
+  })
+}
 
   const handleSearch = (searchTerm) => {
     var results = [];
@@ -24,21 +48,20 @@ const App = () => {
     setSearchResults(results);
   };
 
-  const handleAdd = (movieName) => {
-    if (movies[0].title === 'Please add movies to your list') {
-      setMovies([{title: movieName, watched: false}]);
-    } else if (movies.filter(name => name === movieName).length > 0) {
+  const handleAdd = async(movieName) => {
+     if (movies.filter(name => name.title === movieName).length > 0) {
       alert('Sorry, this movie is already in the list');
     } else {
-      setMovies([...movies, {title: movieName, watched: false}]);
+      await addMovies(movieName);
+      await fetchMovies();
     }
-
   };
 
   const toggleWatched = (movie) => {
-    movie.watched = !movie.watched;
+    var index = movies.indexOf(movie);
     let allMovies = movies.slice();
-    allMovies[movie] = movie;
+    movie.watched === 1 ? movie.watched = 0 : movie.watched = 1;
+    allMovies[index] = movie;
     setMovies(allMovies);
   };
 
@@ -52,7 +75,7 @@ const App = () => {
       <AddMovies handleClick={handleAdd}/>
       <Search handleClick={handleSearch}/>
       <SwitchTabs handleClick={toggleTabs}/>
-      <MovieList movies={searchResults.length > 0 ? searchResults : toWatchPage === true ? movies.filter(name => name.watched === false) : movies.filter(name => name.watched === true)}
+      <MovieList movies={searchResults.length > 0 ? searchResults : toWatchPage === true ? movies.filter(movie => movie.watched === 0) : movies.filter(movie => movie.watched === 1)}
         toggleWatched={toggleWatched}/>
     </div>
   )
