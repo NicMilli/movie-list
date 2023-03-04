@@ -6,6 +6,7 @@ import SwitchTabs from './SwitchTabs.jsx';
 import {useState, useEffect} from 'react';
 import axios from 'axios';
 import {searchMovieDB, searchMovieID} from '../Data/searchMovies.js';
+import '../app.css';
 
 
 const App = () => {
@@ -75,8 +76,10 @@ const addMovies = async (title) => {
   };
 
   return (
-    <div>
-      <h1 className='mov'>MovieList</h1>
+    <div >
+      <div className='center'>
+        <h1 className='test'>MovieList</h1>
+      </div>
       <AddMovies handleClick={handleAdd}/>
       <Search handleClick={handleSearch}/>
       <SwitchTabs handleClick={toggleTabs}/>

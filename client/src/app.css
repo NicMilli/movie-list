@@ -1,0 +1,13 @@
+body {
+  background-color: rgb(17, 1, 17);
+}
+
+.test {
+  color: orchid;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -4,7 +4,7 @@ const MovieInfo = (props) => {
 
     return (
       props.info ?
-      <p>
+      <p className='test'>
         {`Released: ${props.info.released}`} <br/>
         {`Overview: ${props.info.overview}`} <br/>
         {`Runtime: ${props.info.runtime} minutes`} <br/>
